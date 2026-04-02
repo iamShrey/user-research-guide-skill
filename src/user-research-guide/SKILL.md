@@ -15,157 +15,112 @@ description: >
 
 You help user researchers, product managers, and designers create rigorous, well-structured interview guides from a research objective. A good guide isn't just a list of questions — it's a carefully designed conversation arc that earns trust, surfaces latent needs, and avoids leading the participant to say what they think you want to hear.
 
-This skill supports any product, team, or research domain. It ships with universal assets (probing frameworks, questioning rules, output template) and a first-time setup wizard to load your team's specific context.
+Follow these steps in order. Each step has specific instructions about when to pause and involve the human.
 
 ---
 
 ## Available Reference Assets
 
-| Asset | File | Status |
+This skill has bundled context assets. Load them selectively — only what's relevant to the current session.
+
+| Asset | File | What it contains |
 |---|---|---|
-| Org & product context | `references/org-product-context.md` | Set up by user |
-| Research playbook | `references/research-playbook.md` | Set up by user |
-| Probing guide | `references/probing-guide.md` | ✅ Ready |
-| Questioning rulebook | `references/questioning-rulebook.md` | ✅ Ready |
-| Interview guide template | `references/interview-guide-template.md` | ✅ Ready |
-| Historical guides | `references/historical-guides/` | Set up by user |
-
----
-
-## On Every Load: Check Setup Status
-
-Before anything else, read `references/setup_status.md`.
-
-- If the file contains **`not_configured`** → run the **First-Time Setup Wizard** below
-- If the file contains **`configured`** → skip to **Step 0: Asset Check-In**
-
----
-
-## First-Time Setup Wizard
-
-*This runs once — the first time the skill is triggered after install.*
-
-Welcome the user and explain what's happening:
-
-> "Welcome! This is the first time you're running the User Research Guide skill. It ships with universal probing frameworks and question-quality rules, but works best when loaded with your team's context. Let's take 2 minutes to set that up. You can skip anything you don't have yet."
-
----
-
-### Wizard Step 1: Inventory
-
-Use the **AskUserQuestion tool**:
-- **question**: "What context do you have ready to add? (You can always come back and add more later)"
-- **type**: multi-select
-- **options**:
-  - "🏢 Org / product context — product overview, user personas, roadmap"
-  - "🔬 Research playbook — your team's methods, recruiting approach, synthesis process"
-  - "📁 Historical guides — past interview guides you've run"
-  - "⏭️ Skip setup — I'll use the skill with generic assets for now"
-
-If they choose "Skip setup", write `configured` to `references/setup_status.md` and proceed directly to Step 0.
-
----
-
-### Wizard Step 2: Collect each selected asset
-
-For each asset the user selected, collect the content. There are two ways they might provide it:
-
-**Option A — File upload:**
-If the user uploads a file, it will appear in the uploads folder. Read it from there.
-
-**Option B — Paste in chat:**
-Ask them to paste the content directly. Use the **AskUserQuestion tool**:
-- **question**: "[Asset name]: please paste your content below, or upload a file."
-- **type**: free-text
-
-#### Org & product context
-Ask: *"Please upload your org/product context doc (a product brief, PRD, one-pager, or any doc that describes your product and users) — or paste the content directly."*
-
-A useful org context doc typically includes:
-- What the product does and who it's for
-- Key user segments or personas
-- Current product areas and known friction points
-- Roadmap priorities or active hypotheses
-
-Once received, write the content to `references/org-product-context.md` using the SKILL_DIR path provided at load time.
-
-#### Research playbook
-Ask: *"Do you have a research playbook, methods guide, or process doc? Upload or paste it — or skip if you don't have one yet."*
-
-A useful research playbook typically covers:
-- Research methods your team uses and when
-- Recruiting criteria and screener questions
-- How you synthesize and share findings
-
-Once received, write to `references/research-playbook.md`.
-
-#### Historical guides
-Ask how many guides they want to add:
-
-Use the **AskUserQuestion tool**:
-- **question**: "For historical guides: do you have past interview guides to upload, or would you like me to help generate example templates based on past research you've run?"
-- **type**: single-select
-- **options**:
-  - "📤 I have past guides to upload or paste (1–5 files)"
-  - "✍️ Help me generate examples from past objectives I describe"
-  - "⏭️ Skip for now"
-
-**If they upload/paste guides:** collect each one (ask them how many, then collect one at a time). Save each to `references/historical-guides/[topic-slug].md`. Derive a sensible filename from the research objective at the top of each guide.
-
-**If they want generated examples:** ask them to describe 3–5 past research objectives in a few words each (e.g. "onboarding usability", "checkout drop-off", "enterprise admin workflows"). For each, generate a complete, realistic interview guide using the structure in `references/interview-guide-template.md`. Save each to `references/historical-guides/`. These are starting templates — they can refine them over time.
-
-**Format reminder for historical guides** — each file should include at minimum:
-- Research objective (1 paragraph)
-- Sub-research questions (3–6)
-- Target participant description
-- Full guide sections following the interview-guide-template structure
-
----
-
-### Wizard Step 3: Confirm and finish
-
-Once all selected assets are saved, write `configured` to `references/setup_status.md`.
-
-Tell the user:
-
-> "Setup complete. Your assets are saved and will be available every time you run this skill. You can update any of them anytime by saying 'update my research assets'."
-
-Then proceed directly to Step 0 for the current session (don't make them re-trigger the skill).
+| Org & product context | `references/org-product-context.md` | Allrecipes product overview, personas, roadmap, business KPIs |
+| Research playbook | `references/research-playbook.md` | Methods guide, recruiting screeners, synthesis templates |
+| Probing guide | `references/probing-guide.md` | 8 probing frameworks with patterns and examples |
+| Questioning rulebook | `references/questioning-rulebook.md` | 10 rules for question quality and bias avoidance |
+| Interview guide template | `references/interview-guide-template.md` | Output structure for the final guide |
+| Historical guides | `references/historical-guides/` | 5 past Allrecipes guides (menu planner, search, creator onboarding, commerce, personalization) |
 
 ---
 
 ## Step 0: Asset Check-In
 
-Your very first action for every normal session — before doing any research, loading files, or forming sub-questions — is to use the **AskUserQuestion tool** to present an asset selector.
+Your very first action — before doing any research, loading any files, or forming any sub-questions — is to use the **AskUserQuestion tool** to present a multi-select asset selector to the user. Do not skip this even if the user has already provided a research objective. The objective tells you what to build; this step decides what materials to build it with.
 
-Use the AskUserQuestion tool with:
+Use the AskUserQuestion tool with the following:
 - **question**: "I have the research objective. Which reference assets should I load for this session?"
-- **type**: multi-select
-- **options** (include only assets that are configured — check each file for `not_configured` before listing it):
-  - "📋 Org & product context" *(only if org-product-context.md is configured)*
-  - "🔬 Research playbook" *(only if research-playbook.md is configured)*
-  - "🎯 Probing guide — 8 probing frameworks and patterns"
+- **type**: multi-select (allow the user to pick multiple options)
+- **options**:
+  - "📋 Org & product context — Allrecipes product overview, personas, roadmap"
+  - "🔬 Research playbook — methods guide, recruiting screeners, synthesis templates"
+  - "🎯 Probing guide — 8 probing frameworks with patterns and examples"
   - "📏 Questioning rulebook — 10 rules for question quality"
-  - "📁 Historical guides" *(only if historical-guides/ has at least one .md file beyond README.md)*
+  - "📁 Historical guides — 5 past interview guides (menu planner, search, creator onboarding, commerce, personalization)"
   - "🔄 I need to update an asset before starting"
 
 Wait for the user's selections before doing anything else.
 
-- Load only what they selected
-- For historical guides, load the 1–2 most topically relevant to the objective — not all of them
-- If they select "I need to update an asset", ask which one, help them update it, then re-present this selector
-- If no company-specific assets are configured yet, note this and offer to run setup: *"Your team-specific assets haven't been configured yet. Want to set them up now, or proceed with the universal assets only?"*
+- If they select all assets, load everything — but for historical guides, still only load the 1–2 most relevant to the objective rather than all five
+- If they skip certain assets, note which are excluded and proceed without them
+- If they select "I need to update an asset", ask which one and help them edit the relevant reference file before continuing
 
 ---
 
 ## Step 1: Load Selected Context
 
-Read the files for each asset the user confirmed. Use the SKILL_DIR path provided at load time to resolve file paths.
+Load only the assets the user confirmed in Step 0. Read the relevant files from the paths listed in the asset table above.
+
+**For historical guides:** don't load all five — scan the filenames and load the 1–2 most topically relevant to the current research objective. If the objective doesn't clearly match any of them, briefly summarize the available options and ask the user which to use.
 
 After loading, briefly tell the user:
-- What context you found and how you'll use it
+- What you found and how you'll use it
 - Which historical guide(s) you're drawing on, if any
-- Any gaps (e.g. no historical guide matches the current topic)
+- Any gaps you noticed (e.g., no historical guide covers this topic area)
+
+---
+
+## Step 1a: Who Are You Interviewing?
+
+Use the **AskUserQuestion tool** to ask about the participant. If org context was loaded and contains defined personas, surface those as options. Otherwise use generic roles.
+
+- **question**: "Who is the primary participant for this session?"
+- **type**: single-select
+- **options** (if org context loaded with Allrecipes personas):
+  - "🍳 Sam — Home Weeknight Cook (fast, reliable, family-friendly recipes)"
+  - "🔬 Priya — Enthusiast / Experimenter (inspiration, technique, videos)"
+  - "🥗 Alex — Health-Conscious Planner (nutrition, dietary filters, meal planning)"
+  - "🛒 Maria — Bargain Shopper (savings, grocery integrations, deals)"
+  - "✍️ Jordan — Contributor / Creator (submitting recipes, recognition, reach)"
+  - "👤 Other / Custom participant — I'll describe them"
+- **options** (if no org context loaded):
+  - "👤 End user / customer"
+  - "🏢 Internal stakeholder or employee"
+  - "🛠️ Power user or expert"
+  - "🆕 New or prospective user"
+  - "✍️ Custom — I'll describe the participant"
+
+If they select "Other" or "Custom", ask them to briefly describe the participant in one or two sentences before continuing.
+
+Store the participant type — it shapes warm-up questions, SRQ framing, and the moderator notes throughout the guide.
+
+---
+
+## Step 1b: Session Format and Length
+
+Use the **AskUserQuestion tool** twice — once for format, once for length. These directly control the guide's pacing and how many questions fit.
+
+**First question:**
+- **question**: "What's the session format?"
+- **type**: single-select
+- **options**:
+  - "🖥️ Remote moderated (Zoom, Meet, etc.)"
+  - "🏠 In-person moderated"
+  - "🔍 Moderated usability test (with prototype or live product)"
+  - "📓 Diary / longitudinal study"
+  - "🤖 Unmoderated (no live moderator)"
+
+**Second question:**
+- **question**: "How long is the session?"
+- **type**: single-select
+- **options**:
+  - "⚡ 30 minutes"
+  - "🕐 45 minutes"
+  - "🕑 60 minutes"
+  - "🕙 90 minutes"
+  - "🕒 2 hours"
+
+Use these answers to calibrate the guide — a 30-min session gets 2–3 SRQs max and a trimmed arc; a 90-min session can go deeper with more probing sections. Unmoderated sessions get task-based prompts instead of open interview questions.
 
 ---
 
@@ -173,42 +128,49 @@ After loading, briefly tell the user:
 
 Web search fills gaps the context files can't cover. Use it when:
 
-- The **topic isn't well covered** by the loaded context — the objective touches a product area, user segment, or behavior not addressed in any loaded asset
-- The **product area is new or emerging** — not covered by any historical guide
-- The research domain is **specialized** — healthcare, fintech, legal tech, logistics, developer tools, or other areas where behavior is shaped by industry-specific context
-- The objective touches on **recent or shifting behaviors** — adoption patterns, competitive moves, or market changes in the past 1–2 years
-- There's a need to understand the **competitive landscape**
+- The **topic isn't well covered** by the loaded context — if the research objective touches a product area, user segment, or behavior that isn't addressed in the org context or historical guides
+- The **product area is new or emerging** — a feature not yet shipped or not covered by any past guide (e.g., a voice integration, a new B2B partnership)
+- The research domain is **specialized** — healthcare, fintech, legal tech, or other industries where user behavior is shaped by context or regulation you need to understand
+- The objective touches on **recent or shifting behaviors** — technology adoption patterns, market changes, or competitive moves in the past 1–2 years
+- There's a need to understand the **competitive landscape** — how other products handle the same user need
 
-Do NOT search just to seem thorough. If loaded context covers the topic well, skip it.
+Do NOT search just to seem thorough. If the loaded context covers the topic well, proceed.
 
-When searching: use targeted queries for behavioral context ("$domain user behavior", "$feature usability research"). Never copy questions from search results — only use them for domain context.
+When you do search:
+- Search for "[product category] user behavior" or "[feature area] usability research" for behavioral context
+- Search for the company or product if the user is working on something outside Allrecipes
+- Never copy questions from search results — use them only for domain and behavioral context
 
-Summarize what you learned in 2–3 sentences and explain how it shapes the guide.
+After searching, summarize what you learned in 2–3 sentences and explain how it shapes the guide.
 
 ---
 
 ## Step 3: Break Down the Research Objective — Human in the Loop
 
-Decompose the research objective into 3–6 sub-research questions (SRQs) — the strategic knowledge gaps the researcher is trying to close.
+**This step requires human approval before proceeding.**
 
-Use loaded context to:
-- Frame SRQs in terms of known user segments (from org context, if loaded)
-- Avoid re-exploring territory already covered by a historical guide
-- Tie SRQs to active roadmap hypotheses where relevant
+Take the research objective and decompose it into 3–6 sub-research questions (SRQs). These are the strategic knowledge gaps the researcher is trying to close — not interview questions themselves.
 
-Good SRQs are investigable in a 1-hour session, have a clear "why this matters," cover distinct aspects, and range from behavioral to attitudinal to contextual.
+Use the org context and historical guides (if loaded) to:
+- Frame SRQs in terms of known user segments (e.g., "Sam — weeknight cook" or "Jordan — creator")
+- Avoid re-exploring territory already well-covered by a past guide
+- Tie SRQs to active product hypotheses or roadmap items where relevant
+
+Good SRQs are investigable in a 1-hour conversation, have a clear "why this matters," cover distinct aspects of the objective, and range from behavioral to attitudinal to contextual.
 
 **Format:**
+
 ```
 Research Objective: [restate as you understand it]
 
 Sub-Research Questions:
 1. [SRQ] — Why this matters: [one sentence]
 2. [SRQ] — Why this matters: [one sentence]
+3. [SRQ] — Why this matters: [one sentence]
 ...
 ```
 
-Then use the **AskUserQuestion tool**:
+Then use the **AskUserQuestion tool** with:
 - **question**: "These are the sub-questions I'm proposing to build the guide around. Do these capture what you're trying to learn?"
 - **type**: single-select
 - **options**:
@@ -216,75 +178,211 @@ Then use the **AskUserQuestion tool**:
   - "✏️ I want to tweak one or more SRQs"
   - "🔄 Start over with a different framing"
 
-If they choose to tweak, ask what to change before proceeding. Do not move to Step 4 until the user confirms.
+If they choose to tweak, ask them what to change before proceeding. Do not move to Step 3a until the user confirms.
+
+---
+
+## Step 3a: Concept or Stimulus Testing?
+
+Once SRQs are confirmed, use the **AskUserQuestion tool** to ask whether this session includes showing anything to the participant. This determines whether Step 4d (concept response section) gets built into the guide.
+
+- **question**: "Will this session include showing participants anything — a prototype, mockup, feature, or real product?"
+- **type**: single-select
+- **options**:
+  - "🖼️ Yes — a prototype or mockup (not yet live)"
+  - "📱 Yes — a live product or feature they can interact with"
+  - "📄 Yes — a document, screenshot, or static artifact"
+  - "❌ No — purely generative / discovery research"
+
+If they select any "Yes" option, ask one follow-up:
+- **question**: "Roughly when in the session do you plan to show it?"
+- **type**: single-select
+- **options**:
+  - "🔜 Early — after establishing baseline context"
+  - "🔛 Middle — after the core research questions"
+  - "🔚 Late — right before closing"
+
+Store both answers. Use them in Step 4d to build the stimulus response section at the right point in the arc, with the right probe type (Artifact Probe for static content, task-based exploration for live product, reaction-first for prototypes).
 
 ---
 
 ## Step 4: Design the Interview Arc
 
-Design the guide in these sections:
+A good interview has a narrative shape, not a flat list of questions. Design the guide in these sections:
 
 ### 4a. Warm-Up (5–10 min)
-Rapport and context — not primary data. Low-stakes, conversational questions about the participant's role and day-to-day. Use org context (if loaded) to tailor to the right user segment.
+Easy, grounding questions about the participant's role, background, and day-to-day. Goal is rapport and context — not primary data. Questions should feel low-stakes and conversational.
+
+Use the org context (if loaded) to tailor warm-up questions to the right persona segment.
 
 ### 4b. Current State / Baseline Behavior (10–15 min)
-Understand what participants do *before* introducing your product or topic. Anchor in specific recent episodes using **Behavioral Reconstruction (Probe Type 1)** from the probing guide: "Walk me through the last time you..."
+Explore what participants actually do *before* introducing your product or topic. The best insights come from real behavior, not reactions to your product.
+
+Use **Behavioral Reconstruction (Probe Type 1)** from the probing guide to anchor these questions in specific, recent episodes: "Walk me through the last time you..."
 
 ### 4c. Core Research Questions (20–30 min)
-One section per SRQ. Each needs a primary question and 2–3 probing follow-ups. Match probe types to what each SRQ is trying to surface:
-- Gaps / friction → **Workaround Discovery (Type 2)**
-- Expectations → **Mental Model Probing (Type 3)**
-- Emotional stakes → **Emotional Impact Probing (Type 4)**
-- Behavior triggers → **Decision Trigger Probing (Type 5)**
-- Comparison to alternatives → **Comparison Probing (Type 6)**
-- Space for unprompted detail → **Silence Probe (Type 7)**
+One section per SRQ. Each section needs:
+- A primary question that opens the topic
+- 2–3 probing follow-ups drawn from the probing guide
 
-### 4d. Concept / Stimulus Response (optional, 10–15 min)
-Only if the objective involves feedback on a prototype or artifact. Use **Artifact Probe (Type 8)**. If unclear whether this applies, ask.
+Match probe types to what each SRQ is trying to learn:
+- Understanding gaps or friction → **Workaround Discovery (Type 2)**
+- Understanding expectations → **Mental Model Probing (Type 3)**
+- Understanding emotional stakes → **Emotional Impact Probing (Type 4)**
+- Understanding triggers for behavior → **Decision Trigger Probing (Type 5)**
+- Comparing to alternatives → **Comparison Probing (Type 6)**
+- Creating space for unprompted detail → **Silence Probe (Type 7)**
+
+### 4d. Concept or Stimulus Response (optional, 10–15 min)
+If the research involves showing a prototype, concept, or artifact, include this section. Structure: initial reaction → specific aspects → fit with current behavior.
+
+Use **Artifact Probe (Type 8)** when showing real product screens or content the user has saved.
+
+Include this section only if the objective suggests concrete feedback on something. If unclear, ask.
 
 ### 4e. Closing (5 min)
-Catch-all question + graceful close.
+Catch-all question, then a graceful close with thank-you and next steps.
 
 ---
 
 ## Step 5: Apply the Questioning Rulebook
 
-Apply `references/questioning-rulebook.md` (if loaded) to every question. Check for:
-- Leading language → remove it
-- Double-barreled questions → split them
-- Yes/no questions in core sections → open them up
-- Missing probes on emotionally charged topics → add them
-- Assumed behaviors participant may not have had → add conditional framing
-- Questions over 20 words → simplify
+Before finalizing the guide, apply the questioning rulebook (if loaded) to every question. Check for:
 
-End the guide with: **"Rulebook revisions: [2–3 sentence summary of what changed and why]"**
+- Leading language → remove it (Rule 4)
+- Double-barreled questions → split them (Rule 3)
+- Yes/no questions in the core section → open them up (Rule 1)
+- Missing probes on emotionally charged topics → add them (Rule 9)
+- Assumed behaviors the participant may not have had → add conditional framing (Rule 5)
+- Questions over 20 words → simplify (Rule 10)
+
+If the rulebook wasn't loaded in Step 0, apply the core principles from memory: open-ended by default, behavior before attitude, no leading language, one question at a time, ladder for motivation.
+
+End the guide with a brief note: **"Rulebook revisions: [2–3 sentence summary of what changed and why]"**
 
 ---
 
-## Step 6: Format and Deliver
+## Step 6: Format and Deliver the Guide
 
-Produce the guide using `references/interview-guide-template.md`. Include:
-- Header: objective, target participant, session length, date
-- Moderator notes in italics
+Produce the guide using the structure in `references/interview-guide-template.md`.
+
+The guide should be usable by someone who wasn't in the planning process. Include:
+- Header: research objective, target participant profile, session length, date
+- Moderator notes in italics where pacing or technique guidance helps
 - Clear section headers with time allocations
-- "Do not ask" section for any sensitive or out-of-scope topics flagged by context
+- A "Do not ask" section for sensitive or out-of-scope topics flagged by context docs
 
-Save as `[topic]-interview-guide.md` in the workspace folder (or `.docx` if the user prefers).
+If the research playbook was loaded, reference the relevant recruiting screener guidance for the participant type being targeted.
+
+Save the guide as `[topic]-interview-guide.md` in the workspace folder (or `.docx` if the user prefers).
 
 ---
 
-## Updating Assets
+## Step 7: Self-Evaluation
 
-If the user says anything like "update my research assets", "edit my org context", "add a historical guide", or "my playbook changed" — treat this as an asset update request. Ask which asset they want to update, collect the new content, overwrite the relevant file, and confirm.
+After delivering the guide, score your own output across five dimensions. Be honest — the point is to catch real problems, not to rubber-stamp the output.
+
+### Scoring Rubric
+
+Run through each dimension and assign a score of 0–3:
+
+**Pipeline Score** — Did all elicitation gates fire in the right order?
+- 3: Step 0 (asset check-in) → Step 1a (participant) → Step 1b (format + length) → Step 3 (SRQ approval) → Step 3a (stimulus testing) — all fired correctly with AskUserQuestion
+- 2: Minor sequence issue (e.g. combined format+length into one question) but core gates respected
+- 1: Skipped a human approval gate or loaded assets without asking
+- 0: Jumped straight to guide generation without any elicitation
+
+**Context Score** — Did the loaded assets actually shape the output?
+- 3: Right assets loaded, personas/language adapted to context, web search decision was correct
+- 2: Correct assets loaded but not fully leveraged (e.g. relevant historical guide ignored)
+- 1: Wrong assets loaded, or unnecessary web search triggered when context covered it
+- 0: Context ignored — guide is generic regardless of what was loaded
+
+**SRQ Score** — Are the sub-research questions well-formed?
+- 3: SRQs are distinct, investigable in the session length, tied to business context, each has a specific "why this matters"
+- 2: SRQs are reasonable but overlap, or lack business grounding
+- 1: SRQs are too broad, too many for the session length, or indistinguishable from interview questions
+- 0: No SRQs generated, or SRQs are just reworded interview questions
+
+**Question Quality Score** — Do the questions meet the rulebook standard?
+- 3: All 10 rulebook rules pass, probe types correctly matched to SRQ intent, natural conversational flow
+- 2: 1–2 minor violations (e.g. one slightly leading question, one question over 20 words)
+- 1: Multiple violations — double-barreled questions, leading language, or assumed behaviors present
+- 0: Guide reads like a survey — closed questions, leading language throughout
+
+**Output Score** — Is the deliverable complete and usable?
+- 3: Full template structure, realistic time allocations, usable by a cold reader, includes all structural elements (header, moderator notes, section headers, Do Not Ask, Rulebook Revisions)
+- 2: Minor gaps (e.g. missing Do Not Ask section) but otherwise complete
+- 1: Major gaps — no moderator notes, missing time allocations, missing sections
+- 0: Flat list of questions — not a structured guide
+
+### Edge Case Checks
+
+Before scoring, explicitly check for each of these failure modes:
+
+1. **Over-probing** — Does any question have more than 3 follow-up probes? If yes, trim to the 2 most useful.
+2. **Template rigidity** — Did you apply Allrecipes-specific structure (personas, product areas) to a non-Allrecipes context? If yes, this is a Context Score failure.
+3. **Web search over-reliance** — Did you search when loaded context already covered the topic? Check against what was actually in the historical guides.
+4. **SRQ–question conflation** — Are any SRQs phrased as interview questions ("How do users feel about X?") rather than knowledge gaps ("What emotional triggers shape X behavior?")? These need rewriting.
+5. **Session length ignorance** — Does the guide fit the stated session length? Count questions and time allocations. A 30-min guide should have 2–3 SRQs max; a 90-min guide can go to 5–6.
+6. **Stimulus section leakage** — If the user said "No stimulus", is there a concept/stimulus section in the guide anyway? Remove it.
+7. **Rulebook lip service** — Does the "Rulebook Revisions" section list specific question numbers and actual changes made, or just generic statements like "removed leading language"? Generic = score penalty.
+8. **Persona mismatch** — Do the warm-up questions and probe framing match the selected persona? (e.g. asking Sam about technique experimentation is Priya's territory; asking Jordan about meal planning is Sam's.)
+
+### Present the Scorecard
+
+After scoring, show the user a clean scorecard:
+
+```
+📊 Guide Quality Score
+
+Pipeline:         [X]/3
+Context:          [X]/3
+SRQs:             [X]/3
+Question Quality: [X]/3
+Output:           [X]/3
+─────────────────────
+Total:            [X]/15
+
+[List any edge cases flagged, with specific question numbers where applicable]
+```
+
+---
+
+## Step 8: HITL on Low Scores
+
+If the total score is **≤ 8/15**, or if **any single dimension scores 0**, use the **AskUserQuestion tool** immediately:
+
+- **question**: "The guide scored [X]/15. Something likely went wrong. What felt off?"
+- **type**: multi-select
+- **options**:
+  - "❓ The questions don't feel right for my participant"
+  - "📏 Too many / too few questions for my session length"
+  - "🎯 The SRQs missed what I was actually trying to learn"
+  - "🔁 The probing feels repetitive or interrogative"
+  - "📋 The guide structure is missing sections"
+  - "🧠 Context wasn't used — felt generic"
+  - "🌐 Web search went off in the wrong direction"
+  - "✏️ Something else — I'll describe it"
+
+Based on their selection(s), take one of two actions:
+
+**Revise the guide** — if the issue is fixable in this session (wrong participant framing, missing section, over-probing). Fix it and re-score.
+
+**Update the skill** — if the issue reflects a recurring pattern that will affect future sessions. Write a note to `references/improvement-notes.md` describing the failure pattern and the fix. If the issue is structural (e.g. "session length never gets applied correctly"), update the relevant step in this SKILL.md directly.
+
+When updating the skill, tell the user: *"I've logged that as an improvement to the skill so it doesn't happen next time."*
 
 ---
 
 ## What Good Looks Like
 
 A great guide will:
+- Score 12/15 or above
+- Have zero edge case flags
 - Be completable in the stated session length without rushing
 - Cover all approved SRQs without redundancy
 - Have a natural conversational flow, not an interrogation feel
 - Surface behavior and motivation, not just opinion
-- Use probing patterns deliberately — probe types matched to SRQ intent
+- Use probing patterns deliberately — each section's follow-ups match the type of insight the SRQ is seeking
 - Be immediately usable by a researcher reading it cold
